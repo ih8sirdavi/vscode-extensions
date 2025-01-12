@@ -1,7 +1,14 @@
 # Change Log
 
-## [0.0.0] - 2025-01-12
-- Initial development version
+## [0.4.0] - 2025-01-12
+- Added automatic extension installation
+- Enhanced cleanup script with dependency handling
+- Improved collection documentation
+- Added extension state management
+- Updated all collection descriptions
+
+## [0.0.0] - 2025-01-11
+- Initial development version (deprecated)
 - Features:
   - Core development extensions
   - Python development extensions

@@ -16,18 +16,67 @@ function getSettingsPath() {
     const homedir = os.homedir();
     const isWindows = os.platform() === 'win32';
     
+    // Try VSCode Insiders first (primary)
     if (isWindows) {
-        return path.join(homedir, 'AppData', 'Roaming', 'Code - Insiders', 'User', 'settings.json');
+        const insidersPath = path.join(homedir, 'AppData', 'Roaming', 'Code - Insiders', 'User', 'settings.json');
+        if (fs.existsSync(insidersPath)) return insidersPath;
+        
+        // Fallback paths for other forks
+        const possiblePaths = [
+            path.join(homedir, 'AppData', 'Roaming', 'Code', 'User', 'settings.json'),
+            path.join(homedir, 'AppData', 'Roaming', 'VSCodium', 'User', 'settings.json'),
+            path.join(homedir, 'AppData', 'Roaming', 'Code - Exploration', 'User', 'settings.json')
+        ];
+        
+        for (const p of possiblePaths) {
+            if (fs.existsSync(p)) return p;
+        }
+        
+        // Default to Insiders if no existing path found
+        return insidersPath;
     } else {
-        return path.join(homedir, '.config', 'Code - Insiders', 'User', 'settings.json');
+        const insidersPath = path.join(homedir, '.config', 'Code - Insiders', 'User', 'settings.json');
+        if (fs.existsSync(insidersPath)) return insidersPath;
+        
+        // Fallback paths for other forks
+        const possiblePaths = [
+            path.join(homedir, '.config', 'Code', 'User', 'settings.json'),
+            path.join(homedir, '.config', 'VSCodium', 'User', 'settings.json'),
+            path.join(homedir, '.config', 'Code - Exploration', 'User', 'settings.json')
+        ];
+        
+        for (const p of possiblePaths) {
+            if (fs.existsSync(p)) return p;
+        }
+        
+        // Default to Insiders if no existing path found
+        return insidersPath;
     }
 }
 
+// Load environment variables
+require('dotenv').config();
+
+// Get publisher from environment
+const publisher = process.env.VSCODE_PUBLISHER || 'ih8sirdavi';
+
+// Collections and essential extensions to recommend
+const RECOMMENDED_EXTENSIONS = [
+    // Collections (will auto-install their extension packs)
+    `${publisher}.vscode-master-collection`,
+    `${publisher}.core-dev-essentials`,
+    `${publisher}.python-dev-essentials`,
+    `${publisher}.documentation-essentials`,
+    
+    // Essential standalone extensions
+    'rooveterinaryinc.roo-cline'
+];
+
 /**
- * Update VS Code settings to disable extensions
- * @param {string[]} extensions Extensions to disable
+ * Update VS Code settings
+ * @param {string[]} disabledExtensions Extensions to disable
  */
-function updateSettings(extensions) {
+function updateSettings(disabledExtensions) {
     const settingsPath = getSettingsPath();
     let settings = {};
 
@@ -43,22 +92,36 @@ function updateSettings(extensions) {
 
     // Update disabled extensions
     settings['extensions.disableExtensions'] = false;
-    settings['extensions.ignoreRecommendations'] = true;
+    settings['extensions.ignoreRecommendations'] = false;
     if (!settings['extensions.disabled']) {
         settings['extensions.disabled'] = [];
     }
 
     // Add extensions to disable list if not already present
-    extensions.forEach(ext => {
+    disabledExtensions.forEach(ext => {
         if (!settings['extensions.disabled'].includes(ext)) {
             settings['extensions.disabled'].push(ext);
+        }
+    });
+
+    // Update recommended extensions
+    if (!settings['extensions.recommendations']) {
+        settings['extensions.recommendations'] = [];
+    }
+
+    // Add recommended extensions if not already present
+    RECOMMENDED_EXTENSIONS.forEach(ext => {
+        if (!settings['extensions.recommendations'].includes(ext)) {
+            settings['extensions.recommendations'].push(ext);
         }
     });
 
     // Write updated settings
     try {
         fs.writeFileSync(settingsPath, JSON.stringify(settings, null, 2));
-        console.log('✅ Successfully updated settings to disable extensions');
+        console.log('✅ Successfully updated settings');
+        console.log('   - Updated disabled extensions');
+        console.log('   - Updated recommended extensions');
     } catch (error) {
         console.error('Error updating settings:', error.message);
     }
@@ -74,13 +137,23 @@ function getVSCodePaths() {
 
     if (isWindows) {
         return [
+            // Insiders first (primary)
             path.join(homedir, 'AppData', 'Local', 'Programs', 'Microsoft VS Code Insiders', 'bin', 'code-insiders.cmd'),
-            path.join(homedir, 'AppData', 'Local', 'Programs', 'Microsoft VS Code', 'bin', 'code.cmd')
+            // Other forks
+            path.join(homedir, 'AppData', 'Local', 'Programs', 'Microsoft VS Code', 'bin', 'code.cmd'),
+            path.join(homedir, 'AppData', 'Local', 'Programs', 'VSCodium', 'bin', 'codium.cmd'),
+            path.join(homedir, 'AppData', 'Local', 'Programs', 'Code - Exploration', 'bin', 'code-exploration.cmd')
         ];
     } else {
         return [
-            '/usr/bin/code-insiders',
-            '/usr/bin/code'
+            // Flatpak installations
+            '/var/lib/flatpak/exports/bin/code-insiders',
+            '/var/lib/flatpak/exports/bin/code',
+            '/var/lib/flatpak/exports/bin/codium',
+            // Snap installations
+            '/snap/bin/code-insiders',
+            '/snap/bin/code',
+            '/snap/bin/codium'
         ];
     }
 }
@@ -98,8 +171,14 @@ function findWorkingVSCodeCommand() {
         }
     }
 
-    // Fallback to PATH
-    const possibleCommands = ['code-insiders', 'code'];
+    // Fallback to PATH with priority order
+    const possibleCommands = [
+        'code-insiders',  // Try Insiders first
+        'code',          // Then regular VS Code
+        'codium',        // Then VSCodium
+        'code-exploration' // Then other forks
+    ];
+
     for (const cmd of possibleCommands) {
         try {
             const result = spawnSync(cmd, ['--version'], { stdio: 'ignore' });
@@ -111,7 +190,19 @@ function findWorkingVSCodeCommand() {
         }
     }
 
-    throw new Error('No VS Code installation found. Please ensure VS Code or a fork is installed.');
+    // If no command found, try without version check (some forks might handle --version differently)
+    for (const cmd of possibleCommands) {
+        try {
+            const result = spawnSync(cmd, ['--help'], { stdio: 'ignore' });
+            if (result.status === 0) {
+                return cmd;
+            }
+        } catch (error) {
+            continue;
+        }
+    }
+
+    throw new Error('No VS Code installation found. Please ensure VS Code or a compatible fork is installed.');
 }
 
 // Extensions to always keep
@@ -137,11 +228,13 @@ const ESSENTIAL_EXTENSIONS = new Set([
     'ms-python.vscode-pylance',
     'ms-python.debugpy',
 
-    // Our Collections
-    'ih8sirdavi.vscode-master-collection',
-    'ih8sirdavi.core-dev-essentials',
-    'ih8sirdavi.python-dev-essentials',
-    'ih8sirdavi.documentation-essentials'
+    // Our Core Extensions
+    `${publisher}.vscode-master-collection`,
+    `${publisher}.core-dev-essentials`,
+    `${publisher}.python-dev-essentials`,
+    `${publisher}.documentation-essentials`,
+    'rooveterinaryinc.roo-cline',  // Added RooCline as essential
+    'rooveterinaryinc.roo-cline-insiders'  // Added RooCline Insiders as essential
 ]);
 
 // Extensions to disable after installation
@@ -183,6 +276,21 @@ function getDependencies(extension) {
 }
 
 /**
+ * Get extension pack from package.json
+ * @param {string} packagePath Path to package.json
+ * @returns {string[]} Array of extension IDs
+ */
+function getExtensionPack(packagePath) {
+    try {
+        const packageJson = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
+        return packageJson.extensionPack || [];
+    } catch (error) {
+        console.error(`Error reading ${packagePath}:`, error.message);
+        return [];
+    }
+}
+
+/**
  * Get currently installed extensions
  * @param {string} vscodeCmd The VS Code command to use
  * @returns {string[]} Array of installed extension IDs
@@ -205,7 +313,8 @@ function getInstalledExtensions(vscodeCmd) {
 function shouldKeepExtension(extension) {
     return (
         ESSENTIAL_EXTENSIONS.has(extension) ||
-        extension.startsWith('vscode.') // Built-in extensions
+        extension.startsWith('vscode.') || // Built-in extensions
+        extension.startsWith('rooveterinaryinc.') // Keep all Roo extensions
     );
 }
 
@@ -243,97 +352,167 @@ async function cleanAndReinstall() {
         const installedExtensions = getInstalledExtensions(vscodeCmd);
         console.log('Currently installed extensions:', installedExtensions, '\n');
 
-        // Find extensions to remove (including dependencies)
-        const extensionsToRemove = getAllExtensionsToRemove(installedExtensions);
-        console.log('Extensions to remove:', extensionsToRemove, '\n');
+        // Get all required extensions from collections
+        console.log('\n=== Analyzing Required Extensions ===\n');
+        
+        const collectionPaths = {
+            [`${publisher}.core-dev-essentials`]: 'core-dev-essentials/package.json',
+            [`${publisher}.python-dev-essentials`]: 'python-dev-essentials/package.json',
+            [`${publisher}.documentation-essentials`]: 'documentation-essentials/package.json'
+        };
 
-        let successCount = 0;
+        // Build set of all required extensions
+        const allRequired = new Set([
+            `${publisher}.vscode-master-collection`,
+            ...Object.keys(collectionPaths)
+        ]);
+
+        // Add extensions from each collection's package.json
+        for (const [collection, packagePath] of Object.entries(collectionPaths)) {
+            const extensionPack = getExtensionPack(packagePath);
+            extensionPack.forEach(ext => allRequired.add(ext));
+        }
+
+        console.log('Required extensions:', Array.from(allRequired), '\n');
+
+        // Find extensions to remove (not required, not essential, and not dependencies)
+        const toRemove = installedExtensions.filter(ext => {
+            // Skip if it's required or essential
+            if (allRequired.has(ext) || shouldKeepExtension(ext)) {
+                return false;
+            }
+
+            // Check if it's a dependency of any installed extension
+            for (const installed of installedExtensions) {
+                if (EXTENSION_GROUPS[installed]?.includes(ext)) {
+                    console.log(`⚠️ Keeping ${ext} (required by ${installed})`);
+                    return false;
+                }
+            }
+
+            return true;
+        });
+
+        // Find extensions to install (required but not installed)
+        const toInstall = Array.from(allRequired).filter(ext =>
+            !installedExtensions.includes(ext)
+        );
+
+        let removeCount = 0;
         let skipCount = 0;
-        let errorCount = 0;
-        let keptCount = installedExtensions.length - extensionsToRemove.length;
+        let dependencyCount = 0;
+        let installCount = 0;
+        let installErrorCount = 0;
+        let keptCount = installedExtensions.length - toRemove.length;
 
-        // Remove extensions in dependency order
-        console.log('=== Removing Extensions ===\n');
-        for (const extension of extensionsToRemove) {
-            try {
-                // Skip if it's a dependency of a kept extension
-                const parentExtension = Object.keys(EXTENSION_GROUPS).find(key =>
-                    EXTENSION_GROUPS[key].includes(extension)
-                );
-                if (parentExtension && !extensionsToRemove.includes(parentExtension)) {
-                    console.log(`⚠️ Keeping ${extension} (required dependency)\n`);
-                    keptCount++;
-                    continue;
-                }
-
-                console.log(`Removing ${extension}...`);
-                execSync(`${vscodeCmd} --uninstall-extension ${extension}`, { stdio: 'inherit' });
-                console.log(`✅ Successfully removed ${extension}\n`);
-                successCount++;
-            } catch (error) {
-                const errorMsg = error.message.toLowerCase();
-                if (errorMsg.includes('is not installed')) {
-                    console.log(`⚠️ ${extension} is not installed\n`);
-                    skipCount++;
+        // Remove unnecessary extensions
+        if (toRemove.length > 0) {
+            console.log('=== Removing Unnecessary Extensions ===\n');
+            for (const ext of toRemove) {
+                // Check if it's one of our extensions
+                if (ext.startsWith('ih8sirdavi.') || ext.startsWith('ihatesirdavi.')) {
+                    const currentPublisher = ext.split('.')[0];
+                    if (currentPublisher !== publisher) {
+                        try {
+                            console.log(`Removing ${ext} (switching publisher)...`);
+                            execSync(`${vscodeCmd} --uninstall-extension ${ext}`, { stdio: 'inherit' });
+                            console.log(`✅ Successfully removed ${ext}\n`);
+                            removeCount++;
+                        } catch (error) {
+                            const errorMsg = error.message.toLowerCase();
+                            if (errorMsg.includes('is not installed') || errorMsg.includes('not found')) {
+                                console.log(`⚠️ ${ext} is already uninstalled\n`);
+                                skipCount++;
+                            } else {
+                                console.error(`❌ Unexpected error removing ${ext}: ${error.message}\n`);
+                                skipCount++;
+                            }
+                        }
+                    }
                 } else {
-                    console.error(`❌ Error removing ${extension}: ${error.message}\n`);
-                    errorCount++;
+                    try {
+                        console.log(`Removing ${ext}...`);
+                        execSync(`${vscodeCmd} --uninstall-extension ${ext}`, { stdio: 'inherit' });
+                        console.log(`✅ Successfully removed ${ext}\n`);
+                        removeCount++;
+                    } catch (error) {
+                        const errorMsg = error.message.toLowerCase();
+                        if (errorMsg.includes('is not installed') || errorMsg.includes('not found')) {
+                            console.log(`⚠️ ${ext} is already uninstalled\n`);
+                            skipCount++;
+                        } else if (errorMsg.includes('depends on this')) {
+                            console.log(`⚠️ Keeping ${ext} (required by another extension)\n`);
+                            dependencyCount++;
+                        } else {
+                            console.error(`❌ Unexpected error removing ${ext}: ${error.message}\n`);
+                            skipCount++;
+                        }
+                    }
                 }
             }
+        } else {
+            console.log('No unnecessary extensions to remove\n');
         }
 
-        // Uninstall all ih8sirdavi extensions
-        console.log('\n=== Uninstalling Current Extensions ===\n');
-        const ih8Extensions = [
-            'ih8sirdavi.vscode-master-collection',
-            'ih8sirdavi.core-dev-essentials',
-            'ih8sirdavi.python-dev-essentials',
-            'ih8sirdavi.documentation-essentials'
-        ];
-
-        for (const ext of ih8Extensions) {
-            try {
-                console.log(`Uninstalling ${ext}...`);
-                execSync(`${vscodeCmd} --uninstall-extension ${ext}`, { stdio: 'inherit' });
-                console.log(`✅ Successfully uninstalled ${ext}\n`);
-            } catch (error) {
-                // Ignore errors if not installed
-                console.log(`⚠️ ${ext} not installed or already uninstalled\n`);
+        // Install missing extensions
+        if (toInstall.length > 0) {
+            console.log('=== Installing Missing Extensions ===\n');
+            for (const ext of toInstall) {
+                try {
+                    console.log(`Installing ${ext}...`);
+                    execSync(`${vscodeCmd} --install-extension ${ext}`, { stdio: 'inherit' });
+                    console.log(`✅ Successfully installed ${ext}\n`);
+                    installCount++;
+                } catch (error) {
+                    // If extension not found and it's one of our collections, try the other publisher
+                    if (error.message.includes('not found') && ext.startsWith(publisher)) {
+                        const altPublisher = publisher === 'ih8sirdavi' ? 'ihatesirdavi' : 'ih8sirdavi';
+                        const altExt = ext.replace(publisher, altPublisher);
+                        try {
+                            console.log(`⚠️ Trying alternate publisher: ${altExt}...`);
+                            execSync(`${vscodeCmd} --install-extension ${altExt}`, { stdio: 'inherit' });
+                            console.log(`✅ Successfully installed ${altExt}\n`);
+                            installCount++;
+                        } catch (altError) {
+                            console.error(`❌ Error installing ${ext} (and alternate):`, error.message);
+                            installErrorCount++;
+                        }
+                    } else {
+                        console.error(`❌ Error installing ${ext}:`, error.message);
+                        installErrorCount++;
+                    }
+                }
             }
+        } else {
+            console.log('No missing extensions to install\n');
         }
 
-        // Install master collection
-        console.log('\n=== Installing Master Collection ===\n');
-        try {
-            console.log('Installing master collection...');
-            execSync(`${vscodeCmd} --install-extension ih8sirdavi.vscode-master-collection`, { stdio: 'inherit' });
-            console.log('✅ Successfully installed master collection\n');
-        } catch (error) {
-            console.error('❌ Error installing master collection:', error.message);
-            console.log('Please install manually: code --install-extension ih8sirdavi.vscode-master-collection\n');
-        }
-
-        // Disable optional extensions via settings.json
-        console.log('\n=== Disabling Optional Extensions ===\n');
+        // Update settings with disabled and recommended extensions
+        console.log('\n=== Updating Settings ===\n');
         updateSettings(EXTENSIONS_TO_DISABLE);
 
-        console.log('Cleanup Summary:');
-        console.log(`✅ Successfully removed: ${successCount}`);
+        console.log('\nCleanup Summary:');
+        console.log(`✅ Successfully removed: ${removeCount}`);
         console.log(`⚠️ Already uninstalled: ${skipCount}`);
-        console.log(`❌ Failed to remove: ${errorCount}`);
-        console.log(`🔒 Extensions kept: ${keptCount}`);
-        console.log('   Including:');
-        console.log('   - Built-in VS Code extensions');
-        console.log('   - Microsoft development tools');
-        console.log('   - GitHub integration tools');
-        console.log('   - Remote development extensions');
-        console.log('   - Azure development tools');
-        console.log('   - Python tools');
-        console.log('\n🔧 Optional extensions disabled in settings.json:');
-        console.log('   - Jupyter and related extensions');
-        console.log('   - Docker, Kubernetes, and container extensions');
-        console.log('\n✨ Master collection installed - all required extensions will be available after restart.');
-        console.log('\nPlease restart VS Code to complete the process.');
+        console.log(`⚠️ Dependencies kept: ${dependencyCount}`);
+        console.log(`🔒 Essential extensions kept: ${keptCount}`);
+        if (installCount > 0 || installErrorCount > 0) {
+            console.log(`✨ Extensions installed: ${installCount}`);
+            if (installErrorCount > 0) {
+                console.log(`❌ Failed to install: ${installErrorCount}`);
+            }
+        }
+        console.log('\n🔧 Settings updated:');
+        console.log('   - Added recommended extensions');
+        console.log('   - Disabled optional extensions:');
+        console.log('     - Jupyter and related extensions');
+        console.log('     - Docker, Kubernetes, and container extensions');
+        console.log('\n✨ Collections installed - their extension packs will be auto-installed by VSCode');
+        console.log('   This includes:');
+        console.log('   - Core development tools (from core-dev-essentials)');
+        console.log('   - Python development tools (from python-dev-essentials)');
+        console.log('   - Documentation tools (from documentation-essentials)');
+        console.log('\nPlease restart VS Code to complete the installation process.');
 
     } catch (error) {
         console.error('❌ Error:', error.message);

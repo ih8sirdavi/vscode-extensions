@@ -1,7 +1,7 @@
 {
   "name": "documentation-essentials",
   "displayName": "Documentation Essentials",
-  "description": "Essential extensions for documentation and markdown",
+  "description": "Essential extensions for documentation and markdown. Automatically installs Markdown preview, diagrams (Mermaid), emoji support, and enhanced formatting tools.",
   "version": "0.0.0",
   "publisher": "ih8sirdavi",
   "icon": "images/icon.png",

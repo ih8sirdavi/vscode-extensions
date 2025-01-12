@@ -1,6 +1,6 @@
 # VS Code Extension Collections
 
-A comprehensive suite of VS Code extension collections for different development scenarios. Each collection is carefully curated to provide the best tools for specific development tasks.
+A comprehensive suite of VS Code extension collections for different development scenarios. Each collection is carefully curated to provide the best tools for specific development tasks. When installed, collections automatically install their required extensions to provide a complete development environment.
 
 ## Collections
 
@@ -74,6 +74,23 @@ This repository uses modern tooling and practices:
 - Workspace management for collections
 - Automated build and publish workflows
 - Comprehensive documentation
+
+### Extension Management
+
+The repository includes a cleanup script that helps manage VS Code extensions:
+```bash
+# Run cleanup script to manage extensions
+pnpm run cleanup
+# or
+npm run cleanup
+```
+
+The cleanup script:
+- Installs missing extensions from collections
+- Removes unnecessary extensions
+- Preserves essential extensions
+- Updates VS Code settings
+- Handles extension dependencies
 
 ### Getting Started
 

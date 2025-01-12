@@ -1,7 +1,7 @@
 {
   "name": "vscode-master-collection",
   "displayName": "VS Code Master Collection",
-  "description": "Complete collection of essential VS Code extensions for development",
+  "description": "Complete collection of essential VS Code extensions for development. Each collection automatically installs its required extensions.",
   "version": "0.0.0",
   "publisher": "ih8sirdavi",
   "icon": "icon.png",
@@ -16,33 +16,21 @@
     "Extension Packs"
   ],
   "extensionPack": [
-    "ih8sirdavi.core-dev-essentials@0@0@0@0@0@0@0.0.0",
-    "ih8sirdavi.python-dev-essentials@0@0@0@0@0@0@0.0.0",
-    "ih8sirdavi.documentation-essentials@0@0@0@0@0@0@0.0.0"
+    "${publisher}.core-dev-essentials",
+    "${publisher}.python-dev-essentials",
+    "${publisher}.documentation-essentials"
   ],
   "scripts": {
     "prepare": "node scripts/check-package-manager.js",
-    "setup:pnpm": "pnpm install",
-    "setup:npm": "npm install",
-    "setup": "pnpm run setup:pnpm || npm run setup:npm",
-    "cleanup:pnpm": "cd scripts && pnpm run cleanup",
-    "cleanup:npm": "cd scripts && npm run cleanup",
-    "cleanup": "pnpm run cleanup:pnpm || npm run cleanup:npm",
-    "create:pnpm": "cd scripts && pnpm run create",
-    "create:npm": "cd scripts && npm run create",
-    "create": "pnpm run create:pnpm || npm run create:npm",
-    "package-all:pnpm": "pnpm -r exec vsce package --allow-missing-repository",
-    "package-all:npm": "npm run package --workspaces",
-    "package-all": "pnpm run package-all:pnpm || npm run package-all:npm",
-    "publish-all:pnpm": "pnpm -r exec vsce publish --allow-missing-repository",
-    "publish-all:npm": "npm run publish --workspaces",
-    "publish-all": "pnpm run publish-all:pnpm || npm run publish-all:npm",
-    "test-all:pnpm": "pnpm -r exec code --install-extension *.vsix",
-    "test-all:npm": "npm run test --workspaces",
-    "test-all": "pnpm run test-all:pnpm || npm run test-all:npm",
-    "prepackage": "npm run setup || pnpm run setup",
-    "update-publisher": "node scripts/update-publisher.js",
-    "publish-version": "node scripts/publish-manager.js"
+    "setup": "pnpm install || npm install",
+    "cleanup": "node scripts/cli.js cleanup",
+    "cleanup:force": "node scripts/cli.js cleanup --force",
+    "publish": "node scripts/cli.js publish",
+    "publish:force": "node scripts/cli.js publish --force",
+    "remote:dev": "node scripts/cli.js remote",
+    "remote:prod": "node scripts/cli.js remote --production",
+    "package": "pnpm -r exec vsce package --allow-missing-repository || npm run package --workspaces",
+    "test": "pnpm -r exec code --install-extension *.vsix || npm run test --workspaces"
   },
   "workspaces": [
     "core-dev-essentials",

@@ -1,7 +1,7 @@
 {
   "name": "python-dev-essentials",
   "displayName": "Python Development Essentials",
-  "description": "Essential extensions for Python development",
+  "description": "Essential extensions for Python development. Automatically installs Python language support, Pylance, debugger, Jupyter, linting, and documentation tools.",
   "version": "0.0.0",
   "publisher": "ih8sirdavi",
   "icon": "images/icon.png",
@@ -18,7 +18,7 @@
   ],
   "extensionPack": [
     "ms-python.python",
-    "ms-python.pylance",
+    "ms-python.vscode-pylance",
     "ms-python.debugpy",
     "charliermarsh.ruff",
     "ms-toolsai.jupyter",

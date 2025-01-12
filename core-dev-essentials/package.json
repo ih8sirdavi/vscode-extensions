@@ -1,7 +1,7 @@
 {
   "name": "core-dev-essentials",
   "displayName": "Core Development Essentials",
-  "description": "Essential extensions for core development tasks",
+  "description": "Essential extensions for core development tasks. Automatically installs Git integration, project management, Docker, and Kubernetes tools.",
   "version": "0.0.0",
   "publisher": "ih8sirdavi",
   "icon": "images/icon.png",
