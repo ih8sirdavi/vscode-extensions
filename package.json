@@ -51,6 +51,7 @@
   "bugs": {
     "url": "https://github.com/ih8sirdavi/vscode-extensions/issues"
   },
+  "type": "module",
   "devDependencies": {
     "@vscode/vsce": "^2.22.0",
     "dotenv": "^16.4.7"
