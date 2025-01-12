@@ -1,5 +1,31 @@
 # Contributing to VS Code Extension Collections
 
+## Development vs Production
+
+This repository maintains two versions:
+- Development (private) - `main` branch, publisher: `ih8sirdavi`
+- Production (public) - `production` branch, publisher: `ihatesirdavi`
+
+### Working with Branches
+
+1. Development Work:
+   ```bash
+   git checkout main
+   # Make changes
+   git commit -am "Your changes"
+   git push origin main
+   ```
+
+2. Production Release:
+   ```bash
+   # Update production branch
+   git checkout production
+   git merge main
+   # Update publisher in package.json files if needed
+   git commit -am "Update for production release"
+   git push origin production
+   ```
+
 ## Prerequisites
 
 1. Node.js and npm/pnpm installed
@@ -16,7 +42,12 @@
 
 1. Clone the repository:
    ```bash
+   # Development version
    git clone https://github.com/ih8sirdavi/vscode-extensions.git
+   # or
+   # Production version
+   git clone https://github.com/ihatesirdavi/vscode-extensions.git
+
    cd vscode-extensions
    ```
 
@@ -64,7 +95,7 @@ npm run package-all
      "displayName": "Your Collection Display Name",
      "description": "Description of your collection",
      "version": "0.0.1",
-     "publisher": "ih8sirdavi",
+     "publisher": "ih8sirdavi",  // Use appropriate publisher
      "engines": {
        "vscode": "^1.70.0"
      },
@@ -122,6 +153,12 @@ npm run package-all
 
 3. Publish:
    ```bash
+   # Development version
+   git checkout main
+   pnpm run publish-all
+
+   # Production version
+   git checkout production
    pnpm run publish-all
    ```
 
@@ -132,6 +169,7 @@ npm run package-all
 1. Update version in collection's package.json
 2. Update CHANGELOG.md
 3. Republish collection
+4. Update both development and production versions
 
 ### Extension Updates
 
@@ -148,6 +186,7 @@ npm run package-all
 4. Maintain clear changelogs
 5. Respond to user feedback
 6. Regular updates and maintenance
+7. Keep development and production versions in sync
 
 ## Troubleshooting
 
@@ -157,6 +196,7 @@ Common issues and solutions:
    - Verify PAT is valid and has correct scope
    - Check package.json format
    - Ensure unique extension/publisher name
+   - Verify correct publisher for branch
 
 2. Installation Issues
    - Check VS Code version compatibility
@@ -167,3 +207,8 @@ Common issues and solutions:
    - Clear VS Code extension cache
    - Reinstall extension pack
    - Check extension compatibility
+
+4. Branch Issues
+   - Ensure you're on the correct branch
+   - Keep branches in sync
+   - Resolve merge conflicts carefully

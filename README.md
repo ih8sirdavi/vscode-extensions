@@ -45,21 +45,26 @@ Tools for documentation and technical writing:
 
 ## Quick Start
 
-Install all collections at once:
+### Development Version
 ```bash
+# Install development version (private)
 code --install-extension ih8sirdavi.vscode-master-collection
+
+# Or install individual collections
+code --install-extension ih8sirdavi.core-dev-essentials
+code --install-extension ih8sirdavi.python-dev-essentials
+code --install-extension ih8sirdavi.documentation-essentials
 ```
 
-Or install individual collections:
+### Production Version
 ```bash
-# Core Development
-code --install-extension ih8sirdavi.core-dev-essentials
+# Install production version (public)
+code --install-extension ihatesirdavi.vscode-master-collection
 
-# Python Development
-code --install-extension ih8sirdavi.python-dev-essentials
-
-# Documentation
-code --install-extension ih8sirdavi.documentation-essentials
+# Or install individual collections
+code --install-extension ihatesirdavi.core-dev-essentials
+code --install-extension ihatesirdavi.python-dev-essentials
+code --install-extension ihatesirdavi.documentation-essentials
 ```
 
 ## Development
@@ -74,7 +79,12 @@ This repository uses modern tooling and practices:
 
 1. Clone the repository:
    ```bash
+   # Development version (private)
    git clone https://github.com/ih8sirdavi/vscode-extensions.git
+
+   # Production version (public)
+   git clone https://github.com/ihatesirdavi/vscode-extensions.git
+
    cd vscode-extensions
    ```
 
@@ -94,7 +104,7 @@ This repository uses modern tooling and practices:
    npm run package-all
    ```
 
-See [CONTRIBUTING.md](docs/CONTRIBUTING.md) for detailed development instructions.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed development instructions.
 
 ## Repository Structure
 
@@ -108,17 +118,39 @@ vscode-extensions/
 │   ├── cleanup-extensions.js
 │   ├── create-collections.js
 │   └── README.md
-├── docs/               # Documentation
-│   ├── CONTRIBUTING.md
-│   └── *.md
 ├── reports/            # Extension analysis
 │   └── README.md
 └── package.json       # Master collection config
 ```
 
+## Branches
+
+- `main` - Development version (private, ih8sirdavi)
+- `production` - Production version (public, ihatesirdavi)
+
+## Publishing
+
+### Development Version
+```bash
+# Switch to main branch
+git checkout main
+
+# Publish development version
+pnpm run publish-all
+```
+
+### Production Version
+```bash
+# Switch to production branch
+git checkout production
+
+# Publish production version
+pnpm run publish-all
+```
+
 ## Documentation
 
-- [Contributing Guide](docs/CONTRIBUTING.md) - How to contribute
+- [Contributing Guide](CONTRIBUTING.md) - How to contribute
 - [Scripts Documentation](scripts/README.md) - Automation tools
 - [Reports](reports/README.md) - Extension analysis
 - [Structure](STRUCTURE.md) - Repository organization
