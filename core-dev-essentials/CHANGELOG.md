@@ -1,11 +1,13 @@
 # Change Log
 
-## [0.0.2]
-- Updated metadata and documentation
-- Improved compatibility with VS Code forks
-- Added keywords for better discoverability
-
-## [0.0.1]
-- Initial release
-- Added core extensions for core-dev-essentials
-- Verified compatibility with VS Code and forks
+## [0.0.0] - 2025-01-12
+- Initial development version
+- Core development extensions:
+  - EditorConfig support
+  - GitHub Pull Requests and Actions
+  - Project Manager
+  - Todo Tree
+- Container development tools (disabled by default):
+  - Docker support
+  - Kubernetes tools
+  - Bridge to Kubernetes

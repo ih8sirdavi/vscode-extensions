@@ -2,8 +2,9 @@
   "name": "vscode-master-collection",
   "displayName": "VS Code Master Collection",
   "description": "Complete collection of essential VS Code extensions for development",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "publisher": "ih8sirdavi",
+  "icon": "icon.png",
   "repository": {
     "type": "git",
     "url": "https://github.com/ih8sirdavi/vscode-extensions.git"
@@ -15,9 +16,9 @@
     "Extension Packs"
   ],
   "extensionPack": [
-    "ih8sirdavi.core-dev-essentials",
-    "ih8sirdavi.python-dev-essentials",
-    "ih8sirdavi.documentation-essentials"
+    "ih8sirdavi.core-dev-essentials@0@0@0@0@0@0@0.0.0",
+    "ih8sirdavi.python-dev-essentials@0@0@0@0@0@0@0.0.0",
+    "ih8sirdavi.documentation-essentials@0@0@0@0@0@0@0.0.0"
   ],
   "scripts": {
     "prepare": "node scripts/check-package-manager.js",
@@ -39,7 +40,9 @@
     "test-all:pnpm": "pnpm -r exec code --install-extension *.vsix",
     "test-all:npm": "npm run test --workspaces",
     "test-all": "pnpm run test-all:pnpm || npm run test-all:npm",
-    "prepackage": "npm run setup || pnpm run setup"
+    "prepackage": "npm run setup || pnpm run setup",
+    "update-publisher": "node scripts/update-publisher.js",
+    "publish-version": "node scripts/publish-manager.js"
   },
   "workspaces": [
     "core-dev-essentials",
@@ -61,6 +64,7 @@
     "url": "https://github.com/ih8sirdavi/vscode-extensions/issues"
   },
   "devDependencies": {
-    "@vscode/vsce": "^2.22.0"
+    "@vscode/vsce": "^2.22.0",
+    "dotenv": "^16.4.7"
   }
 }

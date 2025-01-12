@@ -2,8 +2,9 @@
   "name": "python-dev-essentials",
   "displayName": "Python Development Essentials",
   "description": "Essential extensions for Python development",
-  "version": "0.0.2",
+  "version": "0.0.0",
   "publisher": "ih8sirdavi",
+  "icon": "images/icon.png",
   "repository": {
     "type": "git",
     "url": "https://github.com/ih8sirdavi/vscode-extensions.git",

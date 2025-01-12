@@ -2,8 +2,9 @@
   "name": "core-dev-essentials",
   "displayName": "Core Development Essentials",
   "description": "Essential extensions for core development tasks",
-  "version": "0.0.2",
+  "version": "0.0.0",
   "publisher": "ih8sirdavi",
+  "icon": "images/icon.png",
   "repository": {
     "type": "git",
     "url": "https://github.com/ih8sirdavi/vscode-extensions.git",
@@ -20,7 +21,10 @@
     "github.vscode-pull-request-github",
     "github.vscode-github-actions",
     "alefragnani.project-manager",
-    "gruntfuggly.todo-tree"
+    "gruntfuggly.todo-tree",
+    "ms-azuretools.vscode-docker",
+    "ms-kubernetes-tools.vscode-kubernetes-tools",
+    "mindaro.mindaro"
   ],
   "scripts": {
     "package": "vsce package --allow-missing-repository",
@@ -33,7 +37,9 @@
     "development",
     "productivity",
     "git",
-    "project management"
+    "project management",
+    "docker",
+    "kubernetes"
   ],
   "homepage": "https://github.com/ih8sirdavi/vscode-extensions/tree/main/core-dev-essentials#readme",
   "bugs": {
