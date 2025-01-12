@@ -1,0 +1,42 @@
+{
+  "name": "core-dev-essentials",
+  "displayName": "Core Development Essentials",
+  "description": "Essential extensions for core development tasks",
+  "version": "0.0.2",
+  "publisher": "ih8sirdavi",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ih8sirdavi/vscode-extensions.git",
+    "directory": "core-dev-essentials"
+  },
+  "engines": {
+    "vscode": "^1.70.0"
+  },
+  "categories": [
+    "Extension Packs"
+  ],
+  "extensionPack": [
+    "editorconfig.editorconfig",
+    "github.vscode-pull-request-github",
+    "github.vscode-github-actions",
+    "alefragnani.project-manager",
+    "gruntfuggly.todo-tree"
+  ],
+  "scripts": {
+    "package": "vsce package --allow-missing-repository",
+    "publish": "vsce publish --allow-missing-repository",
+    "test": "code --install-extension *.vsix"
+  },
+  "license": "MIT",
+  "keywords": [
+    "core",
+    "development",
+    "productivity",
+    "git",
+    "project management"
+  ],
+  "homepage": "https://github.com/ih8sirdavi/vscode-extensions/tree/main/core-dev-essentials#readme",
+  "bugs": {
+    "url": "https://github.com/ih8sirdavi/vscode-extensions/issues"
+  }
+}

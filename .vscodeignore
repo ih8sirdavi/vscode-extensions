@@ -1,0 +1,22 @@
+# Ignore collection source files
+core-dev-essentials/**
+python-dev-essentials/**
+documentation-essentials/**
+
+# Development files
+.vscode/**
+.vscode-test/**
+node_modules/**
+.gitignore
+.git/**
+*.vsix
+
+# Scripts and reports
+scripts/**
+reports/**
+
+# Source files
+src/**
+test/**
+tsconfig.json
+tslint.json

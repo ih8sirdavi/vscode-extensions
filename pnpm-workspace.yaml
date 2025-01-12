@@ -1,0 +1,4 @@
+packages:
+  - 'core-dev-essentials'
+  - 'python-dev-essentials'
+  - 'documentation-essentials'

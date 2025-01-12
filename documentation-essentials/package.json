@@ -1,0 +1,42 @@
+{
+  "name": "documentation-essentials",
+  "displayName": "Documentation Essentials",
+  "description": "Essential extensions for documentation and markdown",
+  "version": "0.0.2",
+  "publisher": "ih8sirdavi",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ih8sirdavi/vscode-extensions.git",
+    "directory": "documentation-essentials"
+  },
+  "engines": {
+    "vscode": "^1.70.0"
+  },
+  "categories": [
+    "Extension Packs"
+  ],
+  "extensionPack": [
+    "yzhang.markdown-all-in-one",
+    "shd101wyy.markdown-preview-enhanced",
+    "bierner.markdown-mermaid",
+    "bierner.markdown-emoji",
+    "bierner.markdown-footnotes"
+  ],
+  "scripts": {
+    "package": "vsce package --allow-missing-repository",
+    "publish": "vsce publish --allow-missing-repository",
+    "test": "code --install-extension *.vsix"
+  },
+  "license": "MIT",
+  "keywords": [
+    "markdown",
+    "documentation",
+    "preview",
+    "diagrams",
+    "writing"
+  ],
+  "homepage": "https://github.com/ih8sirdavi/vscode-extensions/tree/main/documentation-essentials#readme",
+  "bugs": {
+    "url": "https://github.com/ih8sirdavi/vscode-extensions/issues"
+  }
+}

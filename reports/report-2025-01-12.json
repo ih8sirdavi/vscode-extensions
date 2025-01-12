@@ -1,0 +1,164 @@
+{
+  "timestamp": "2025-01-12T16:27:06.825Z",
+  "totalExtensions": 114,
+  "byCategory": {
+    "OTHER": 48,
+    "MARKDOWN": 11,
+    "GIT": 8,
+    "PYTHON": 22,
+    "DATABASE": 6,
+    "REMOTE": 8,
+    "JAVA": 11
+  },
+  "potentialOverlaps": {
+    "OTHER": {
+      "extensions": [
+        "alefragnani.project-manager@12.8.0",
+        "almenon.arepl@3.0.0",
+        "batisteo.vscode-django@1.15.0",
+        "bradlc.vscode-tailwindcss@0.13.69",
+        "charliermarsh.ruff@2025.2.0",
+        "chrisjsewell.myst-tml-syntax@0.1.3",
+        "christian-kohler.npm-intellisense@1.4.5",
+        "cweijan.vscode-database-client2@8.1.1",
+        "deerawan.vscode-dash@2.4.0",
+        "dotjoshjohnson.xml@2.5.1",
+        "editorconfig.editorconfig@0.16.4",
+        "esbenp.prettier-vscode@11.0.0",
+        "fwcd.kotlin@0.2.36",
+        "gep13.chocolatey-vscode@0.7.2",
+        "grafana.grafana-vscode@0.0.19",
+        "gruntfuggly.todo-tree@0.0.226",
+        "hbenl.vscode-test-explorer@2.22.1",
+        "mechatroner.rainbow-csv@3.14.0",
+        "mikestead.dotenv@1.0.1",
+        "mintlify.document@2.2.2",
+        "ms-azuretools.vscode-docker@1.29.3",
+        "ms-dotnettools.vscode-dotnet-runtime@2.2.3",
+        "ms-kubernetes-tools.vscode-kubernetes-tools@1.3.18",
+        "ms-playwright.playwright@1.1.12",
+        "ms-vscode.azure-repos@0.41.2024112101",
+        "ms-vscode.makefile-tools@0.11.13",
+        "ms-vscode.powershell@2024.5.2",
+        "ms-vscode.test-adapter-converter@0.2.1",
+        "njpwerner.autodocstring@0.6.1",
+        "oderwat.indent-rainbow@8.3.1",
+        "oracle.oracledevtools@23.4.1",
+        "redhat.vscode-xml@0.27.2",
+        "redhat.vscode-yaml@1.15.0",
+        "rooveterinaryinc.roo-cline@2.2.46",
+        "rvest.vs-code-prettier-eslint@6.0.0",
+        "saoudrizwan.claude-dev@3.1.5",
+        "shardulm94.trailing-spaces@0.4.1",
+        "slevesque.vscode-zipexplorer@0.3.1",
+        "streetsidesoftware.code-spell-checker@4.0.34",
+        "svelte.svelte-vscode@109.5.1",
+        "thebarkman.vscode-djaneiro@1.4.2",
+        "trabpukcip.wolf@0.4.3",
+        "vmware.vscode-boot-dev-pack@0.2.1",
+        "vmware.vscode-spring-boot@1.59.0",
+        "wholroyd.jinja@0.0.8",
+        "xirider.livecode@1.3.10",
+        "yoavbls.pretty-ts-errors@0.6.1",
+        "zxh404.vscode-proto3@0.5.5"
+      ],
+      "note": "Multiple OTHER extensions found. Consider reviewing for overlapping functionality."
+    },
+    "MARKDOWN": {
+      "extensions": [
+        "bierner.github-markdown-preview@0.3.0",
+        "bierner.markdown-checkbox@0.4.0",
+        "bierner.markdown-emoji@0.3.1",
+        "bierner.markdown-footnotes@0.1.1",
+        "bierner.markdown-mermaid@1.27.0",
+        "bierner.markdown-preview-github-styles@2.1.0",
+        "bierner.markdown-yaml-preamble@0.1.0",
+        "bpruitt-goddard.mermaid-markdown-syntax-highlighting@1.7.0",
+        "davidanson.vscode-markdownlint@0.58.1",
+        "shd101wyy.markdown-preview-enhanced@0.8.15",
+        "yzhang.markdown-all-in-one@3.6.2"
+      ],
+      "note": "Multiple MARKDOWN extensions found. Consider reviewing for overlapping functionality."
+    },
+    "GIT": {
+      "extensions": [
+        "codezombiech.gitignore@0.9.0",
+        "donjayamanne.git-extension-pack@0.1.3",
+        "donjayamanne.githistory@0.6.20",
+        "eamodio.gitlens@16.1.1",
+        "github.remotehub@0.64.0",
+        "github.vscode-github-actions@0.27.0",
+        "github.vscode-pull-request-github@0.103.2025010904",
+        "ziyasal.vscode-open-in-github@1.3.6"
+      ],
+      "note": "Multiple GIT extensions found. Consider reviewing for overlapping functionality."
+    },
+    "PYTHON": {
+      "extensions": [
+        "cstrap.python-snippets@0.1.2",
+        "demystifying-javascript.python-extensions-pack@1.0.3",
+        "dongli.python-preview@0.0.4",
+        "donjayamanne.python-environment-manager@1.2.7",
+        "donjayamanne.python-extension-pack@1.7.0",
+        "kaih2o.python-resource-monitor@0.3.0",
+        "kevinrose.vsc-python-indent@1.19.0",
+        "littlefoxteam.vscode-python-test-adapter@0.8.2",
+        "mgesbert.python-path@0.0.14",
+        "ms-python.autopep8@2024.1.13171014",
+        "ms-python.debugpy@2024.15.2024121701",
+        "ms-python.flake8@2023.13.13171014",
+        "ms-python.python@2024.23.2025011101",
+        "ms-python.vscode-pylance@2024.12.100",
+        "ms-toolsai.jupyter@2024.11.0",
+        "ms-toolsai.jupyter-keymap@1.1.2",
+        "ms-toolsai.jupyter-renderers@1.0.21",
+        "ms-toolsai.vscode-jupyter-cell-tags@0.1.9",
+        "ms-toolsai.vscode-jupyter-slideshow@0.1.6",
+        "njqdev.vscode-python-typehint@1.5.1",
+        "tht13.python@0.2.3",
+        "tushortz.python-extended-snippets@0.0.1"
+      ],
+      "note": "Multiple PYTHON extensions found. Consider reviewing for overlapping functionality."
+    },
+    "DATABASE": {
+      "extensions": [
+        "cweijan.dbclient-jdbc@1.3.9",
+        "dbaeumer.vscode-eslint@3.0.13",
+        "linjun.sqlite-support@1.0.4",
+        "mongodb.mongodb-vscode@1.11.0",
+        "redis.redis-for-vscode@1.2.0",
+        "rohit-chouhan.sqlite-snippet@2.0.1"
+      ],
+      "note": "Multiple DATABASE extensions found. Consider reviewing for overlapping functionality."
+    },
+    "REMOTE": {
+      "extensions": [
+        "ms-vscode-remote.remote-containers@0.395.0",
+        "ms-vscode-remote.remote-ssh@0.117.2025011020",
+        "ms-vscode-remote.remote-ssh-edit@0.87.0",
+        "ms-vscode-remote.remote-wsl@0.88.5",
+        "ms-vscode-remote.vscode-remote-extensionpack@0.26.0",
+        "ms-vscode.remote-explorer@0.5.2025010909",
+        "ms-vscode.remote-repositories@0.43.2024112101",
+        "ms-vscode.remote-server@1.6.2025010809"
+      ],
+      "note": "Multiple REMOTE extensions found. Consider reviewing for overlapping functionality."
+    },
+    "JAVA": {
+      "extensions": [
+        "oracle.oracle-java@23.0.1",
+        "pleiades.java-extension-pack-jdk@2024.1204.0",
+        "redhat.java@1.39.2025011008",
+        "vscjava.vscode-gradle@3.16.4",
+        "vscjava.vscode-java-debug@0.58.1",
+        "vscjava.vscode-java-dependency@0.24.1",
+        "vscjava.vscode-java-pack@0.29.0",
+        "vscjava.vscode-java-test@0.43.0",
+        "vscjava.vscode-maven@0.44.0",
+        "vscjava.vscode-spring-boot-dashboard@0.14.0",
+        "vscjava.vscode-spring-initializr@0.11.2"
+      ],
+      "note": "Multiple JAVA extensions found. Consider reviewing for overlapping functionality."
+    }
+  }
+}

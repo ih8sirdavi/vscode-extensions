@@ -1,0 +1,28 @@
+{
+  "name": "vscode-extension-scripts",
+  "version": "1.0.0",
+  "description": "Scripts for managing VS Code extension collections",
+  "private": true,
+  "scripts": {
+    "cleanup": "node cleanup-extensions.js",
+    "create": "node create-collections.js",
+    "package-all": "cd .. && for /d %d in (*-essentials) do cd %d && vsce package --allow-missing-repository && cd ..",
+    "publish-all": "cd .. && for /d %d in (*-essentials) do cd %d && vsce publish --allow-missing-repository && cd ..",
+    "test-all": "cd .. && for /d %d in (*-essentials) do cd %d && code --install-extension *.vsix && cd .."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ih8sirdavi/vscode-extensions.git",
+    "directory": "scripts"
+  },
+  "keywords": [
+    "vscode",
+    "extensions",
+    "automation"
+  ],
+  "author": "ih8sirdavi",
+  "license": "MIT",
+  "dependencies": {
+    "@vscode/vsce": "^2.22.0"
+  }
+}

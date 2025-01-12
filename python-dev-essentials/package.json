@@ -1,0 +1,44 @@
+{
+  "name": "python-dev-essentials",
+  "displayName": "Python Development Essentials",
+  "description": "Essential extensions for Python development",
+  "version": "0.0.2",
+  "publisher": "ih8sirdavi",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ih8sirdavi/vscode-extensions.git",
+    "directory": "python-dev-essentials"
+  },
+  "engines": {
+    "vscode": "^1.70.0"
+  },
+  "categories": [
+    "Extension Packs"
+  ],
+  "extensionPack": [
+    "ms-python.python",
+    "ms-python.pylance",
+    "ms-python.debugpy",
+    "charliermarsh.ruff",
+    "ms-toolsai.jupyter",
+    "njpwerner.autodocstring",
+    "njqdev.vscode-python-typehint"
+  ],
+  "scripts": {
+    "package": "vsce package --allow-missing-repository",
+    "publish": "vsce publish --allow-missing-repository",
+    "test": "code --install-extension *.vsix"
+  },
+  "license": "MIT",
+  "keywords": [
+    "python",
+    "development",
+    "jupyter",
+    "debugging",
+    "linting"
+  ],
+  "homepage": "https://github.com/ih8sirdavi/vscode-extensions/tree/main/python-dev-essentials#readme",
+  "bugs": {
+    "url": "https://github.com/ih8sirdavi/vscode-extensions/issues"
+  }
+}

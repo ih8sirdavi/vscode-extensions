@@ -1,0 +1,16 @@
+# Ignore everything in parent directory
+../**
+
+# Development files
+.vscode/**
+.vscode-test/**
+node_modules/**
+.gitignore
+.git/**
+*.vsix
+
+# Source files
+src/**
+test/**
+tsconfig.json
+tslint.json
