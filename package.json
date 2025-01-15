@@ -2,6 +2,7 @@
   "name": "vscode-master-collection",
   "displayName": "VS Code Master Collection",
   "description": "Complete collection of essential VS Code extensions for development. Each collection automatically installs its required extensions.",
+  "type": "module",
   "version": "0.0.0",
   "publisher": "ih8sirdavi",
   "icon": "icon.png",
